@@ -20,10 +20,10 @@ class UploadImage(APIView):
         else:
             return Response(serializer.errors, status=400)
 
-class DownloadImage(APIView):
+class DeleteImage(APIView):
 
-    def get(self, request, pk,  *args, **kwargs):
-        upload = Upload.objects.all()
-        serializer = UploadSerializer(upload, many=False)
+    def delete(self, request, pk, *args, **kwargs):
+        image = Upload.objects.get(pk=pk)
+        image.delete()
 
-        return Response(serializer.data)
+        return Response({'message': 'Image deleted'},status=204)

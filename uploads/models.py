@@ -1,5 +1,4 @@
 from django.db import models
-from users.models import UserProfile
 import uuid
 
 # Image directory path

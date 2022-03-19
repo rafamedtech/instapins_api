@@ -56,7 +56,7 @@ class CommentPin(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
         print(request.user)
-        pin = Pin.objects.get(id=data['id'])
+        pin = Pin.objects.get(id=data['pinid'])
         comment = Comments.objects.create(
             name = data['name'],
             email = data['email'],

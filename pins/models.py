@@ -11,7 +11,7 @@ class Comments(models.Model):
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=True)
+    # pin = models.ForeignKey(Pin, on_delete=models.CASCADE)
 
 class Pin(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
