@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 
 from pins.serializers import PinSerializer, CommentsSerializer
-from .models import Comments, Pin
+from .models import Comments, Pin, Like
 
 # Create your views here.
 class GetPins(APIView):
@@ -67,3 +67,15 @@ class CommentPin(APIView):
         serializer = self.serializer_class(comment)
 
         return Response(serializer.data, status=201)
+
+class LikePin(APIView):
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        pin = Pin.objects.get(id=data['pinid'])
+        like = Like.objects.create(
+            user = request.user
+        )
+        pin.likes.add(like)
+
+        return Response({'message': 'Pin liked'}, status=200)

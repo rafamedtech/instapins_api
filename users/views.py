@@ -24,7 +24,7 @@ class RegisterUserView(APIView):
 class LogoutUserView(APIView):
     permission_classes = (IsAuthenticated,)
     def post(self, request):
-        return Response({'message': 'Logout Sucessful'}, status=status.HTTP_200_OK)
+        return Response({'message': 'Logout Successful'}, status=status.HTTP_200_OK)
 
 class GetUserView(APIView):
     permission_classes = (IsAuthenticated,)

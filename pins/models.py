@@ -13,6 +13,13 @@ class Comments(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     # pin = models.ForeignKey(Pin, on_delete=models.CASCADE)
 
+class Like(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    # pin = models.ForeignKey('Pin', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
 class Pin(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     label = models.CharField(max_length=250)
@@ -22,6 +29,7 @@ class Pin(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     comments = models.ManyToManyField(Comments, related_name='pins', blank=True)
+    likes = models.ManyToManyField(Like, related_name='pins', blank=True)
 
     def __str__(self):
         return self.label
