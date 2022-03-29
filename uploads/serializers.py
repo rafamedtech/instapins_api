@@ -9,5 +9,6 @@ class UploadSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
     def create(self, validated_data):
+        print(validated_data)
         upload = Upload.objects.create(**validated_data)
         return upload

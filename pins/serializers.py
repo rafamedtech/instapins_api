@@ -4,7 +4,7 @@ from .models import Comments, Pin, Like
 class CommentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comments
-        fields = ('id', 'name', 'email', 'comment', 'created_at', 'updated_at')
+        fields = ('id', 'username', 'email', 'comment', 'created_at', 'updated_at')
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,7 +14,7 @@ class LikeSerializer(serializers.ModelSerializer):
 
 class PinSerializer(serializers.ModelSerializer):
     comments = CommentsSerializer(many=True, read_only=True)
-    owner = serializers.ReadOnlyField(source='owner.name')
+    owner = serializers.ReadOnlyField(source='owner.username')
     likes = LikeSerializer(many=True, read_only=True)
 
     class Meta:

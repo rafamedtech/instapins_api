@@ -10,15 +10,26 @@ from .models import Upload
 class UploadImage(APIView):
 
     parser_classes = [MultiPartParser, JSONParser, FormParser]
+    serializer_class = UploadSerializer
+
+    def get(self, request, *args, **kwargs):
+        uploads = Upload.objects.all()
+        serializer = UploadSerializer(uploads, many=True)
+        return Response(serializer.data, status=200)
 
     def post(self, request, *args, **kwargs):
+        data = request.data
 
-        serializer = UploadSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        else:
-            return Response(serializer.errors, status=400)
+        upload = Upload.objects.create(
+            image=data['image'],
+            user=request.user
+        )
+        upload.save()
+
+        serializer = self.serializer_class(upload)
+        
+        return Response(serializer.data, status=201)
+
 
 class DeleteImage(APIView):
 

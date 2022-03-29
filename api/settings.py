@@ -49,7 +49,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'corsheaders',
-    'storages'
+    # 'storages',
+    'django_dropbox_storage',
 ]
 
 AUTH_USER_MODEL = 'users.UserProfile'
@@ -185,13 +186,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-MEDIA_URL = 'images/'
+MEDIA_URL = ''
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/')
 STATIC_ROOT =  os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
@@ -200,15 +201,19 @@ STATIC_ROOT =  os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'django_dropbox_storage.storage.DropboxStorage'
 
-AWS_QUERYSTRING_AUTH = False
-AWS_S3_FILE_OVERWRITE = False
+DROPBOX_ACCESS_TOKEN = 'sl.BEd_J5dOpgoS9L_rOVqnm2vSEgaTW24R-brf_Lmc1uWeQ-YrSORKsyYGRRgt4bENr0tS81gEDKjCeYJx57LRMhZxnd7J3D2PennZcW8OFoUMBs4-bHiR_hCKxEJPVSp_Zb7MM-4'
+# DROPBOX_ROOT_FOLDER = '/uploads'
 
-# AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_ACCESS_KEY_ID = 'AKIAUAS6QGKRYX3QHFF7'
-# AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_SECRET_ACCESS_KEY = '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'
+# AWS_QUERYSTRING_AUTH = False
+# AWS_S3_FILE_OVERWRITE = False
 
-# AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-AWS_STORAGE_BUCKET_NAME = 'rafamed-bucket'
+# # AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+# AWS_ACCESS_KEY_ID = 'AKIAUAS6QGKRYX3QHFF7'
+# # AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+# AWS_SECRET_ACCESS_KEY = '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'
+
+# # AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+# AWS_STORAGE_BUCKET_NAME = 'rafamed-bucket'
+

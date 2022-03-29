@@ -30,9 +30,10 @@ class PostPin(APIView):
 
     def post(self, request, *args, **kwargs):
         data = request.data
+        print(request.user.username)
 
         pin = Pin.objects.create(
-            label=data['label'],
+            title=data['title'],
             description=data['description'],
             url=data['url'],
             owner=request.user
@@ -55,11 +56,11 @@ class CommentPin(APIView):
 
     def post(self, request, *args, **kwargs):
         data = request.data
-        print(request.user)
-        pin = Pin.objects.get(id=data['pinid'])
+        print(data)
+        pin = Pin.objects.get(id=data['pin_id'])
         comment = Comments.objects.create(
-            name = data['name'],
-            email = data['email'],
+            username = request.user.username,
+            email = request.user,
             comment = data['comment']
         )
         pin.comments.add(comment)
@@ -68,11 +69,24 @@ class CommentPin(APIView):
 
         return Response(serializer.data, status=201)
 
+class DeleteComment(APIView):
+
+    def delete(self, request, pk, *args, **kwargs):
+        comment = Comments.objects.get(pk=pk)
+        comment.delete()
+
+        return Response({'message': 'Comment deleted'},status=204)
+
 class LikePin(APIView):
 
     def post(self, request, *args, **kwargs):
         data = request.data
-        pin = Pin.objects.get(id=data['pinid'])
+
+        # validate if user has already liked the pin
+        if Like.objects.filter(pin=data['pin_id'], user=request.user).exists():
+            return Response({'message': 'You have already liked this pin'}, status=400)
+
+        pin = Pin.objects.get(id=data['pin_id'])
         like = Like.objects.create(
             user = request.user
         )
