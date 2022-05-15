@@ -29,4 +29,18 @@ class LogoutUserView(APIView):
 class GetUserView(APIView):
     permission_classes = (IsAuthenticated,)
     def get(self, request):
-        return Response({'user': request.user.username, 'email': request.user.email}, status=status.HTTP_200_OK)
+        return Response({'username': request.user.username, 'email': request.user.email, 'avatar': request.user.avatar}, status=status.HTTP_200_OK)
+
+    # update user profile image
+    def put(self, request):
+        user = UserProfile.objects.get(email=request.user.email)
+        user.avatar = request.data['avatar']
+        user.save()
+        return Response({'message': 'Image updated'}, status=status.HTTP_200_OK)
+
+class GetAllUsers(APIView):
+    def get(self, request):
+        
+        users = UserProfile.objects.exclude(username=request.user.username)
+        serializer = UserProfileSerializer(users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

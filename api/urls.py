@@ -26,6 +26,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('uploads/', include('uploads.urls')),
     path('pins/', include('pins.urls')),
+    path('messages/', include('chat.urls')),
     
 ]
 

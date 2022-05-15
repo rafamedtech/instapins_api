@@ -30,12 +30,14 @@ SECRET_KEY = 'django-insecure-$w--q#xr&kqbz3uj^&!4qw1$@m^_l7hug#_n=c=f$%d4&w79(h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,13 +46,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'users',
-    'uploads',
+    # 'uploads',
     'pins',
+    'chat',
 
     'rest_framework',
     'corsheaders',
-    # 'storages',
-    'django_dropbox_storage',
 ]
 
 AUTH_USER_MODEL = 'users.UserProfile'
@@ -98,7 +99,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 
         # Whitenoise
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -120,6 +121,7 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 ]
 
 ROOT_URLCONF = 'api.urls'
+ASGI_APPLICATION = "api.asgi.application"
 
 TEMPLATES = [
     {
@@ -217,3 +219,11 @@ DROPBOX_ACCESS_TOKEN = 'sl.BEd_J5dOpgoS9L_rOVqnm2vSEgaTW24R-brf_Lmc1uWeQ-YrSORKs
 # # AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 # AWS_STORAGE_BUCKET_NAME = 'rafamed-bucket'
 
+CHANNEL_LAYERS = {
+		"default": {
+				"BACKEND": "channels_redis.core.RedisChannelLayer",
+				"CONFIG": {
+						"hosts": [("localhost", 6379)]
+				}
+		}
+}

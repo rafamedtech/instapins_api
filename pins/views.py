@@ -2,7 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 
-from pins.serializers import PinSerializer, CommentsSerializer
+
+from pins.serializers import PinSerializer, CommentsSerializer, LikeSerializer
 from .models import Comments, Pin, Like
 
 # Create your views here.
@@ -17,9 +18,12 @@ class GetPins(APIView):
         return Response(serializer.data, status=200)
 
 class GetSinglePin(APIView):
+
+    serializer_class = PinSerializer
+
     def get(self, request, pk, *args, **kwargs):
         pin = Pin.objects.get(pk=pk)
-        serializer = PinSerializer(pin)
+        serializer = self.serializer_class(pin)
 
         return Response(serializer.data, status=200)
 
@@ -30,7 +34,6 @@ class PostPin(APIView):
 
     def post(self, request, *args, **kwargs):
         data = request.data
-        print(request.user.username)
 
         pin = Pin.objects.create(
             title=data['title'],
@@ -42,10 +45,27 @@ class PostPin(APIView):
         serializer = self.serializer_class(pin)
         return Response(serializer.data, status=201)
 
+class updatePin(APIView):
+
+    parser_classes = [MultiPartParser, JSONParser, FormParser]
+    serializer_class = PinSerializer
+
+    def put(self, request, pk, *args, **kwargs):
+        data = request.data
+
+        pin = Pin.objects.get(pk=pk)
+        pin.title = data['title']
+        pin.description = data['description']
+        
+        pin.save()
+
+        serializer = self.serializer_class(pin)
+        return Response(serializer.data, status=200)
+
 class DeletePin(APIView):
 
     def delete(self, request, pk, *args, **kwargs):
-        pin = Pin.objects.get(pk=pk)
+        pin = Pin.objects.get(id=pk)
         pin.delete()
 
         return Response({'message': 'Pin deleted'},status=204)
@@ -56,10 +76,10 @@ class CommentPin(APIView):
 
     def post(self, request, *args, **kwargs):
         data = request.data
-        print(data)
-        pin = Pin.objects.get(id=data['pin_id'])
+        
+        pin = Pin.objects.get(id=data['pin'])
         comment = Comments.objects.create(
-            username = request.user.username,
+            username = request.user,
             email = request.user,
             comment = data['comment']
         )
@@ -79,17 +99,32 @@ class DeleteComment(APIView):
 
 class LikePin(APIView):
 
+    serializer_class = LikeSerializer
+
     def post(self, request, *args, **kwargs):
         data = request.data
+        
 
         # validate if user has already liked the pin
-        if Like.objects.filter(pin=data['pin_id'], user=request.user).exists():
+        if Like.objects.filter(pins=data['id'], username=request.user).exists():
             return Response({'message': 'You have already liked this pin'}, status=400)
 
-        pin = Pin.objects.get(id=data['pin_id'])
+        pin = Pin.objects.get(id=data['id'])
+        
         like = Like.objects.create(
-            user = request.user
+            username = request.user
         )
         pin.likes.add(like)
 
-        return Response({'message': 'Pin liked'}, status=200)
+        serializer = self.serializer_class(like)
+
+        return Response(serializer.data, status=201)
+
+    def delete(self, request, *args, **kwargs):
+        data = request.data
+        print(f"data: {data}")
+        pin = Pin.objects.get(id=data['id'])
+        like = Like.objects.get(pins=pin, username=request.user)
+        like.delete()
+
+        return Response({'message': 'Like deleted'},status=204)

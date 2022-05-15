@@ -1,12 +1,16 @@
 from rest_framework import serializers
 from .models import Comments, Pin, Like
+from users.models import UserProfile
+from users.serializers import UserProfileSerializer
 
 class CommentsSerializer(serializers.ModelSerializer):
+    username = UserProfileSerializer(read_only=True)
     class Meta:
         model = Comments
         fields = ('id', 'username', 'email', 'comment', 'created_at', 'updated_at')
 
 class LikeSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField(source='username.username')
     class Meta:
         model = Like
         fields = '__all__'
