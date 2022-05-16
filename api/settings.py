@@ -227,3 +227,5 @@ CHANNEL_LAYERS = {
 				}
 		}
 }
+
+# AUTHENTICATION_BACKENDS = ['rest_framework_simplejwt.authentication.JWTAuthentication']
