@@ -29,7 +29,7 @@ class LogoutUserView(APIView):
 class GetUserView(APIView):
     permission_classes = (IsAuthenticated,)
     def get(self, request):
-        return Response({'username': request.user.username, 'email': request.user.email, 'avatar': request.user.avatar}, status=status.HTTP_200_OK)
+        return Response({'id': request.user.id,'username': request.user.username, 'email': request.user.email, 'avatar': request.user.avatar}, status=status.HTTP_200_OK)
 
     # update user profile image
     def put(self, request):
