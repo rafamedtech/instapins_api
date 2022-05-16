@@ -24,10 +24,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', GetRoutes.as_view()),
     path('users/', include('users.urls')),
-    path('uploads/', include('uploads.urls')),
     path('pins/', include('pins.urls')),
     path('messages/', include('chat.urls')),
-    
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
