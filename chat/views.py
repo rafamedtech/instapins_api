@@ -11,24 +11,28 @@ from .serializers import ChatModelSerializer
 class MessageAPIView(APIView):
     def get(self, request):
 
+        all_threads = ChatModel.objects.all()
         my_threads = []
-
-
-        for thread in ChatModel.objects.all():
-            user = UserProfile.objects.get(username=thread.sender)
-            if request.user == user:
-                my_threads.append(user)
-                if user.id > request.user.id:
-                    thread_name = f'chat_{user.id}-{request.user.id}'
-                else:
-                    thread_name = f'chat_{request.user.id}-{user.id}'
-
+        
+        for thread in all_threads:
+            me = request.user
+            other = UserProfile.objects.get(username=thread.sender)
+            
+            if me.id > other.id:
+                thread_name = f'chat_{me.id}_{other.id}'
             else:
-                threads = ChatModel.objects.get(thread_name=thread_name)
-                my_threads.append(threads)
+                thread_name = f'chat_{other.id}_{me.id}'
+
+            if thread.thread_name == thread_name:
+                my_threads.append(thread)
+            
+            if thread.sender == request.user.username:
+                my_threads.append(thread)
+
 
 
         serializer = ChatModelSerializer(my_threads, many=True)
+        
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
