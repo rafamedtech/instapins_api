@@ -1,16 +1,39 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import ChatModel
+
 from users.models import UserProfile
+from .models import ChatModel
+from users.serializers import UserProfileSerializer
 from .serializers import ChatModelSerializer
 
 # Create your views here.
 class MessageAPIView(APIView):
     def get(self, request):
-        # get all messages
-        messages = ChatModel.objects.all()
-        serializer = ChatModelSerializer(messages, many=True)
+
+        all_threads = ChatModel.objects.all()
+        my_threads = []
+        
+        for thread in all_threads:
+            me = request.user
+            other = UserProfile.objects.get(username=thread.sender)
+            
+            if me.id > other.id:
+                thread_name = f'chat_{me.id}_{other.id}'
+            else:
+                thread_name = f'chat_{other.id}_{me.id}'
+
+            if thread.thread_name == thread_name:
+                my_threads.append(thread)
+            
+            if thread.sender == request.user.username:
+                my_threads.append(thread)
+
+
+
+        serializer = ChatModelSerializer(my_threads, many=True)
+        
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class SingleMessageAPIView(APIView):

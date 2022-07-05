@@ -7,8 +7,9 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.tokens import UntypedToken
-from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
-from rest_framework_simplejwt.state import User
+# from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
+# from rest_framework_simplejwt.state import User
+from users.models import UserProfile
 from channels.middleware import BaseMiddleware
 from channels.auth import AuthMiddlewareStack
 from django.db import close_old_connections
@@ -23,7 +24,7 @@ def get_user(validated_token):
         print(f"{user}")
         return user
 
-    except User.DoesNotExist:
+    except UserProfile.DoesNotExist:
         return AnonymousUser()
 
 
@@ -37,7 +38,8 @@ class JwtAuthMiddleware(BaseMiddleware):
         close_old_connections()
 
         # Get the token
-        token = parse_qs(scope["query_string"].decode("utf8"))["token"][0]
+        token = parse_qs(scope["query_string"].decode("utf8"))["token"][0].split(" ")[1]
+        
 
         # Try to authenticate the user
         try:
