@@ -33,7 +33,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['instapins.herokuapp.com', 'localhost']
 
-# test
+
 # Application definition
 
 INSTALLED_APPS = [
