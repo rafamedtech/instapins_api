@@ -7,7 +7,7 @@ from .serializers import UserProfileSerializer
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 
 class RegisterUserView(APIView):
-    parser_classes = [JSONParser, MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, JSONParser, FormParser]
     def post(self, request):
 
         # if email is already in use
