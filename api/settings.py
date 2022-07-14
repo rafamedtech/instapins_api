@@ -100,7 +100,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 
         # Whitenoise
-    # 'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
