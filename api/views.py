@@ -7,9 +7,21 @@ class GetRoutes(APIView):
 
         routes = [
             
-            {'POST':'/uploads/'},
+            {'POST':'/pins/'},
 
-            {'GET':'/uploads/<id>/'},
+            {'GET':'/pins/details/<id>/'},
+            {'GET':'/pins/details/<id>/edit/'},
+            {'POST':'/pins/create/'},
+            {'DELETE':'/pins/delete/'},
+
+            {'POST':'/pins/comment/<str:id>/'},
+            {'DELETE':'/pins/comment/<str:id>/<str:pk>/'},
+            {'POST':'/pins/like/<str:id>/'},
+
+            {'GET':'/users/user/'},
+            {'POST':'/users/register/'},
+            {'POST':'/users/token/'},
+            {'POST':'/users/logout/'},
             
 
         ]

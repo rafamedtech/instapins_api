@@ -25,7 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$w--q#xr&kqbz3uj^&!4qw1$@m^_l7hug#_n=c=f$%d4&w79(h'
+SECRET_KEY = env('DJANGO_SECRET_KEY')
+# SECRET_KEY = 'django-insecure-$w--q#xr&kqbz3uj^&!4qw1$@m^_l7hug#_n=c=f$%d4&w79(h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -147,10 +148,20 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': '5432',
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
@@ -201,31 +212,3 @@ STATIC_ROOT =  os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-DEFAULT_FILE_STORAGE = 'django_dropbox_storage.storage.DropboxStorage'
-
-DROPBOX_ACCESS_TOKEN = 'sl.BEd_J5dOpgoS9L_rOVqnm2vSEgaTW24R-brf_Lmc1uWeQ-YrSORKsyYGRRgt4bENr0tS81gEDKjCeYJx57LRMhZxnd7J3D2PennZcW8OFoUMBs4-bHiR_hCKxEJPVSp_Zb7MM-4'
-# DROPBOX_ROOT_FOLDER = '/uploads'
-
-# AWS_QUERYSTRING_AUTH = False
-# AWS_S3_FILE_OVERWRITE = False
-
-# # AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-# AWS_ACCESS_KEY_ID = 'AKIAUAS6QGKRYX3QHFF7'
-# # AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-# AWS_SECRET_ACCESS_KEY = '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'
-
-# # AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-# AWS_STORAGE_BUCKET_NAME = 'rafamed-bucket'
-
-# CHANNEL_LAYERS = {
-# 		"default": {
-# 				"BACKEND": "channels_redis.core.RedisChannelLayer",
-# 				"CONFIG": {
-# 						"hosts": [("localhost", 6379)]
-# 				}
-# 		}
-# }
-
-# AUTHENTICATION_BACKENDS = ['rest_framework_simplejwt.authentication.JWTAuthentication']
