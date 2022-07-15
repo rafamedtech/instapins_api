@@ -28,8 +28,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = env('DJANGO_SECRET_KEY')
-SECRET_KEY = 'django-insecure-$w--q#xr&kqbz3uj^&!4qw1$@m^_l7hug#_n=c=f$%d4&w79(h'
+SECRET_KEY = env('DJANGO_SECRET_KEY')
+# SECRET_KEY = 'django-insecure-$w--q#xr&kqbz3uj^&!4qw1$@m^_l7hug#_n=c=f$%d4&w79(h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -152,16 +152,10 @@ WSGI_APPLICATION = 'api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': 'd92qn6c6gouf5i',
-        'NAME': env('DB_NAME'),
-        
-        # 'USER': 'kwjutkelwrabwg',
-        'USER': env('DB_USER'),
-        # 'PASSWORD': 'd6fa38aa4d2d36515f8b4c7a005122f2597dea45c6cf560f59e01b7ded91aed8',
-        'PASSWORD': env('DB_PASSWORD'),
-        
         'HOST': env('DB_HOST'),
-        # 'HOST': 'ec2-34-233-115-14.compute-1.amazonaws.com',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
         'PORT': '5432',
     }
 }
