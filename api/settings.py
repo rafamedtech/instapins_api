@@ -40,8 +40,6 @@ ALLOWED_HOSTS = [ 'http://localhost:3000', 'http://127.0.0.1:3000', 'instapins.h
 # Application definition
 
 INSTALLED_APPS = [
-    # 'channels',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,9 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'users',
-
     'pins',
-
 
     'rest_framework',
     'corsheaders',
