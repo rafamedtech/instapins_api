@@ -34,7 +34,7 @@ SECRET_KEY = 'django-insecure-$w--q#xr&kqbz3uj^&!4qw1$@m^_l7hug#_n=c=f$%d4&w79(h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ 'http://localhost:3000', 'http://127.0.0.1:3000', 'instapins-api.herokuapp.com']
+ALLOWED_HOSTS = ['instapins-api.herokuapp.com']
 
 
 # Application definition
@@ -114,6 +114,7 @@ CORS_ORIGIN_WHITELIST = (
 
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+
     'https://instapins.herokuapp.com'
 )
 
@@ -122,7 +123,6 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 ]
 
 ROOT_URLCONF = 'api.urls'
-# ASGI_APPLICATION = "api.asgi.application"
 
 TEMPLATES = [
     {
